@@ -14,32 +14,15 @@
         height: 80vh;
         background: yellow;
         perspective: 500px;
-      }
-      .card {
-        width: 100px;
-        height: 150px;
-        margin: 1em;
-        /* rem : root의 font-size 기준 */
-        /* transform: perspective(500px) rotateY(45deg); */
-        transform: rotateY(0deg);
-        /* rotateY(0deg)가 없더라도 작동하지만 값을 주는게 미리 변화를 준비하기 때문에 성능이 더 좋아진다고 합니다. */
-        transition: 1s;
         position: relative;
-        transform-style: preserve-3d;
-        /* transform-origin: 0% 0%; */
-      }
-      .world:hover .card {
-        transform: rotateY(-180deg);
       }
       .card-side {
         display: flex;
         justify-content: center;
         align-items: center;
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
+        width: 100px;
+        height: 150px;
+        margin: 1em;
         border-radius: 0.5em;
         /* em : 현재 요소의 font-size 기준 */
         font-size: 1.5rem;
@@ -50,31 +33,33 @@
         backface-visibility: hidden;
         /* 뒤집어졌을때 뒷면이 안보이도록 하기 위해 */
         /* 여기서 순서가 중요한데 접두어가 붙은 속성의 순서는 상관없지만 마지막에는 반드시 표준속성을 적어주자 */
+        transition: 1s;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin: -75px 0 0 -50px;
       }
       .card-side-front {
         background: white;
+        transform: rotateY(0deg);
         z-index: 1;
       }
       .card-side-back {
         background: red;
         transform: rotateY(180deg);
       }
+      .world:hover > .card-side-front {
+        transform: rotateY(180deg);
+      }
+      .world:hover > .card-side-back {
+        transform: rotateY(360deg);
+      }
     </style>
   </head>
   <body>
     <div class="world">
-      <div class="card">
-        <div class="card-side card-side-front">F</div>
-        <div class="card-side card-side-back">B</div>
-      </div>
-      <div class="card">
-        <div class="card-side card-side-front">F</div>
-        <div class="card-side card-side-back">B</div>
-      </div>
-      <div class="card">
-        <div class="card-side card-side-front">F</div>
-        <div class="card-side card-side-back">B</div>
-      </div>
+      <div class="card-side card-side-front">F</div>
+      <div class="card-side card-side-back">B</div>
     </div>
   </body>
 </html>
