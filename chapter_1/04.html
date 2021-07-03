@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive Web</title>
+    <style>
+      .world {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 80vw;
+        height: 80vh;
+        background: yellow;
+        perspective: 500px;
+      }
+      .card {
+        width: 100px;
+        height: 150px;
+        margin: 1em;
+        /* rem : root의 font-size 기준 */
+        /* transform: perspective(500px) rotateY(45deg); */
+        transform: rotateY(0deg);
+        /* rotateY(0deg)가 없더라도 작동하지만 값을 주는게 미리 변화를 준비하기 때문에 성능이 더 좋아진다고 합니다. */
+        transition: 1s;
+        position: relative;
+        transform-style: preserve-3d;
+        /* transform-origin: 0% 0%; */
+      }
+      .world:hover .card {
+        transform: rotateY(-180deg);
+      }
+      .card-side {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 0.5em;
+        /* em : 현재 요소의 font-size 기준 */
+        font-size: 1.5rem;
+        -webkit-backface-visibility: hidden;
+        /* 사파리에서 적용되기 위한 접두어 webkit */
+        -moz-backface-visibility: hidden;
+        -o-backface-visibility: hidden;
+        backface-visibility: hidden;
+        /* 뒤집어졌을때 뒷면이 안보이도록 하기 위해 */
+        /* 여기서 순서가 중요한데 접두어가 붙은 속성의 순서는 상관없지만 마지막에는 반드시 표준속성을 적어주자 */
+      }
+      .card-side-front {
+        background: white;
+        z-index: 1;
+      }
+      .card-side-back {
+        background: red;
+        transform: rotateY(180deg);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="world">
+      <div class="card">
+        <div class="card-side card-side-front">F</div>
+        <div class="card-side card-side-back">B</div>
+      </div>
+      <div class="card">
+        <div class="card-side card-side-front">F</div>
+        <div class="card-side card-side-back">B</div>
+      </div>
+      <div class="card">
+        <div class="card-side card-side-front">F</div>
+        <div class="card-side card-side-back">B</div>
+      </div>
+    </div>
+  </body>
+</html>
+
+<!--
+  rotate에서 +deg가 반시계방향 -deg가 시계방향  
+  rotateY로 돌렸다고 해서 3D느낌이 안난다. 
+  부모 요소에 perspective 속성을 추가해줘야한다. 
+  값은 크면 클수록 멀리서 보는 것이기 때문에 값이 작을 수록 극적인 3D효과를 볼 수 있다. 
+  잘 모르겠으면 100 px과 1000px을 넣어보고 차이를 보자 
+  만약 모든 transform 요소가 같은 3D 모양으로 보이기를 원한다면 그 요소의 transform안에 perspective를 넣어주자.
+
+  현재 transform은 world가 hover시 전체 카드가 rotateY되는거 하나 
+  뒷면을 뒤집어야하니 뒷면에 rotateY하나 이렇게 적용되어져 있다. 
+  world에 원근감 속성을 줬지만 transform이 적용되는 card-side-back의 부모는 card이므로 card에도 원근감이 필요하다.
+  그래서 card에 transform-style:preserve-3d를 적용해준다. 
+  preserve-3d를 적용하면 부모의 원근감속성이 그아래 자식을 뚫고 손자에게 까지 다다를 수 있도록 해주는 속성이다.
+  그런데 IE에서는 preserve-3d가 적용되지 않는 문제가 발생한다.
+  해결방법 
+  - 카드 앞뒤면을 감싸고 있는 card 컨테이너를 없앤다.
+  - 그리고 카드면을 각각 돌려준다. 대신 앞면은 0deg->180deg 뒷면은 180deg->360deg
+ -->
