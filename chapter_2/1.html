@@ -28,6 +28,16 @@
         border: 10px dashed red;
       }
     </style>
+    <!-- <script>
+      // window.addEventListner("load",function()) // load는 모든것이 다 load 된 후의 event이므로 비효율적
+      window.addEventListener("DOMContentLoaded", function () {
+        // DOMContentLoaded는 DOM의 요소들이 다 Load된 후 event
+        const ilbuni = document.querySelector(".ilbuni.c");
+        ilbuni.addEventListener("click", () => {
+          ilbuni.classList.toggle("special");
+        });
+      });
+    </script> -->
   </head>
   <body>
     <div class="characters">
@@ -40,13 +50,22 @@
       <div class="ilbuni c">
         <img src="../images/ilbuni_2.png" alt="일분이" />
       </div>
-    </div>
-    <div class="ilbuni d">
-      <img src="../images/ilbuni_3.png" alt="일분이" />
+      <div class="ilbuni d">
+        <img src="../images/ilbuni_3.png" alt="일분이" />
+      </div>
     </div>
 
     <script>
-      // 직접 타이핑 해보세요
+      // 전역변수를 최소화 하는게 좋다고 합니다. 그래서 함수로 포장을 해줍니다.
+      (function () {
+        const characters = document.querySelector(".characters");
+        function clickHandler(e) {
+          // console.log(this);
+          console.log(e.target); // 실제로 클릭한 타겟
+          console.log(e.currentTarget); // this와 동일 (이벤트로 등록되있는 객체)
+        }
+        characters.addEventListener("click", clickHandler);
+      })();
     </script>
   </body>
 </html>

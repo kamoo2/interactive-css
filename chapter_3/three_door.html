@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive Web</title>
+    <link rel="stylesheet" href="../css/reset.css" />
+    <style>
+      .stage {
+        width: 100vw;
+        height: 100vh;
+        background-color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .door {
+        position: relative;
+        width: 100px;
+        height: 150px;
+      }
+      .door-back {
+        position: absolute;
+        left: 0;
+        top: 0;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+      }
+      .ilbuni {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100px;
+        height: 100px;
+        background-repeat: no-repeat;
+        background-position: center bottom;
+        background-size: contain;
+        /* translate3d를 사용하게 되면 하드웨어 가속을 사용해 퍼포먼스가 더 좋다고 합니다.
+           그래서 애플 개발자들은 x축만 움직이든 y축만 움직이든 translate3d를 사용합니다.
+        */
+        transform: translate3d(100%, 0, 0);
+        /* 축약형에서는 뒤에서 나오는 s가 delay를 가리킨다. */
+        transition: 0.5s 0.3s;
+        /* transition-duration: 0.5s;
+        transition-delay: 0.3s; */
+      }
+      .door:nth-child(1) .ilbuni {
+        background-image: url("../images/ilbuni_1.png");
+      }
+      .door:nth-child(2) .ilbuni {
+        background-image: url("../images/ilbuni_2.png");
+      }
+      .door:nth-child(3) .ilbuni {
+        background-image: url("../images/ilbuni_3.png");
+      }
+      .door-body {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        transition: 0.5s;
+        transform-origin: left;
+      }
+
+      .door:nth-child(1) .door-body {
+        background: rgba(255, 0, 0, 0.7);
+      }
+      .door:nth-child(2) .door-body {
+        background: rgba(0, 255, 0, 0.7);
+      }
+      .door:nth-child(3) .door-body {
+        background: rgba(0, 0, 255, 0.7);
+      }
+
+      .door-opened .door-body {
+        transform: perspective(800px) rotateY(-110deg);
+      }
+
+      .door-opened .ilbuni {
+        transform: translate3d(0, 0, 0);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stage">
+      <div class="door">
+        <div class="door-back">
+          <div class="ilbuni"></div>
+        </div>
+        <div class="door-body"></div>
+      </div>
+      <div class="door">
+        <div class="door-back">
+          <div class="ilbuni"></div>
+        </div>
+        <div class="door-body"></div>
+      </div>
+      <div class="door">
+        <div class="door-back">
+          <div class="ilbuni"></div>
+        </div>
+        <div class="door-body"></div>
+      </div>
+    </div>
+    <script>
+      (function () {
+        const stageElem = document.querySelector(".stage");
+        // 현재 활성회된 아이템을 저장하는 변수
+        let currentItem;
+
+        function activate(elem) {
+          elem.classList.add("door-opened");
+          currentItem = elem;
+        }
+
+        function inactivate(elem) {
+          elem.classList.remove("door-opened");
+        }
+
+        function doorHandler(e) {
+          const targetElem = e.target;
+
+          // 비활성화
+          if (currentItem) {
+            inactivate(currentItem);
+          }
+
+          // 활성화
+          if (targetElem.classList.contains("door-body")) {
+            activate(targetElem.parentNode);
+          }
+        }
+        stageElem.addEventListener("click", doorHandler);
+
+        activate(document.querySelector(".door:first-child"));
+      })();
+    </script>
+  </body>
+</html>
+
+<!-- 여러개 중에 한개만 활성화하기 굉장히 많이 사용되는 UI -->

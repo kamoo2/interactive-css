@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+      body {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .menu {
+        /* x축 정렬 이므로 y축 stretch */
+        display: flex;
+        padding: 2em;
+        border-radius: 20px;
+        background: #eee;
+      }
+      .menu-btn {
+        display: inline-flex;
+        align-items: center;
+        margin: 0 1em;
+        padding: 0.5em 1em 0.5em 0.5em;
+        border: 5px solid white;
+        border-radius: 20px;
+        outline: 0;
+        font: 900 1.2rem NotoSans;
+        background: linear-gradient(
+          0deg,
+          rgba(223, 210, 0, 1) 0%,
+          rgba(255, 240, 0, 1) 24%,
+          rgba(255, 240, 0, 1) 70%,
+          rgba(255, 255, 255, 1) 100%
+        );
+        box-shadow: rgba(0, 0, 0, 0.1) 0 0 0 1px inset;
+      }
+      .btn-label {
+        text-shadow: rgba(255, 255, 255, 1) 0 1px 0;
+        /* pointer-events: none; */
+      }
+
+      .icon {
+        width: 60px;
+        /* pointer-events: none; */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu">
+      <!-- <button class="menu-btn" data-value="1">
+        <img src="../images/ilbuni_1.png" alt="" class="icon" />
+        <span class="btn-label">일분이 1</span>
+      </button>
+      <button class="menu-btn" data-value="2">
+        <img src="../images/ilbuni_2.png" alt="" class="icon" />
+        <span class="btn-label">일분이 2</span>
+      </button>
+      <button class="menu-btn" data-value="3">
+        <img src="../images/ilbuni_3.png" alt="" class="icon" />
+        <span class="btn-label">일분이 3</span>
+      </button> -->
+    </div>
+
+    <script>
+      const menu = document.querySelector(".menu");
+      function clickHandler(event) {
+        event.preventDefault();
+        let elem = event.target;
+        while (!elem.classList.contains("menu-btn")) {
+          elem = elem.parentNode;
+          if (elem.nodeName === "BODY") {
+            elem = null;
+            return;
+          }
+        }
+        console.log(elem.dataset.value);
+      }
+
+      menu.addEventListener("click", clickHandler);
+
+      window.addEventListener("click", (e) => {
+        e.preventDefault();
+        const htmlStr = `<button class="menu-btn" data-value="1">
+        <img src="../images/ilbuni_1.png" alt="" class="icon" />
+        <span class="btn-label">일분이 1</span>
+      </button>
+      <button class="menu-btn" data-value="2">
+        <img src="../images/ilbuni_2.png" alt="" class="icon" />
+        <span class="btn-label">일분이 2</span>
+      </button>
+      <button class="menu-btn" data-value="3">
+        <img src="../images/ilbuni_3.png" alt="" class="icon" />
+        <span class="btn-label">일분이 3</span>
+      </button>`;
+        menu.innerHTML = htmlStr;
+      });
+    </script>
+  </body>
+</html>
+
+<!-- 이벤트 위임
+querySelectorAll을 이용해서 모든 button을 배열로 가져오고 각 button 마다 addEventListener을 해주게 되면
+메모리를 차지 하므로 성능 저하를 일으킵니다.
+그래서 이벤트 위임을 사용해야 합니다. (캡쳐링 버블링)
+
+이벤트 위임 사용시 문제점 : 버튼 안에 있는 이미지나 라벨도 menu의 자식이기 때문에 클릭 이벤트가 먹힌다.
+
+해결방법 1 : css만을 이용한 방법
+- pointer-events:none; 속성을 추가해준다.
+
+해결방법 2 : js를 이용한 방법
+-->
